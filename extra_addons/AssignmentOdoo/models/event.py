@@ -27,18 +27,23 @@ class Event(models.Model):
     def send_event_reminders(self):
         today = fields.Date.today()
         events = self.search([('date', '>=', today)])
+        print(events)
+        base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
         for event in events:
             notify_date = event.date - timedelta(days=event.communication_start_before)
+            print(notify_date)
             if today == notify_date:
                 for participant in event.participant_ids:
                     if participant.responsible_user_id:
-                        self.env['mail.mail'].create({
+                        print(participant.responsible_user_id)
+                        newmail=self.env['mail.mail'].create({
                             'subject': f'Reminder: {event.name} is coming up',
                             'body_html': f'<p>Dear {participant.responsible_user_id.name},</p>'
                                          f'<p>Please start communicating with the contacts for the event {event.name}.</p>'
-                                         f'<p><a href="/web#id={event.id}&model=event.management">Event Details</a></p>',
+                                         f'<p><a href="{base_url}/web#id={event.id}&model=event.management&view_type=form">Event Details</a></p>',
                             'email_to': participant.responsible_user_id.email,
                         }).send()
+                        print(newmail)
 
     def action_start_communication(self):
         self.ensure_one()
