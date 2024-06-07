@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_event_form" model="ir.ui.view">
+        <field name="name">event.management.form</field>
+        <field name="model">event.management</field>
+        <field name="arch" type="xml">
+            <form string="Event Management">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="date" widget="date"/>
+                            <field name="communication_start_before"/>
+                        </group>
+                        <group>
+                            <field name="participant_ids" widget="many2many_tags"/>
+                        </group>
+                    </group>
+                    <button name="action_start_communication" string="Start Communication" type="object" class="oe_highlight"/>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="view_event_tree" model="ir.ui.view">
+        <field name="name">event.management.tree</field>
+        <field name="model">event.management</field>
+        <field name="arch" type="xml">
+            <tree string="Event Management">
+                <field name="name"/>
+                <field name="date"/>
+                <field name="communication_start_before"/>
+            </tree>
+        </field>
+    </record>
+</odoo>

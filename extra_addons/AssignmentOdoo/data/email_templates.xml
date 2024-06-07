@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="email_template_event_reminder" model="mail.template">
+            <field name="name">Event Reminder</field>
+            <field name="model_id" ref="model_event_management"/>
+            <field name="subject">Reminder: ${object.name} is coming up</field>
+            <field name="email_from">${(user.email or 'noreply@abood.com')|safe}</field>
+            <field name="email_to">${object.responsible_user_id.email|safe}</field>
+            <field name="body_html">
+                <![CDATA[
+                <p>Dear ${object.responsible_user_id.name},</p>
+                <p>Please start communicating with the contacts for the event ${object.name}.</p>
+                <p><a href="${object.get_event_url()}">Event Details</a></p>
+                ]]>
+            </field>
+        </record>
+    </data>
+</odoo>
